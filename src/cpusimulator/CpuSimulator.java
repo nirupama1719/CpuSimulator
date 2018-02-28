@@ -15,7 +15,7 @@ import tools.InstructionSequence;
  */
 public class CpuSimulator {
     
-    public static boolean printStagesEveryCycle = false;
+    public static boolean printStagesEveryCycle = true;
 
     /**
      * @param args the command line arguments
@@ -23,7 +23,7 @@ public class CpuSimulator {
     public static void main(String[] args) throws IOException, Exception {
         InstructionSequence seq = new InstructionSequence();
         seq.loadFile("samples/sieve.asm");
-        seq.printProgram();
+        //seq.printProgram();
         
         MyCpuCore core = new MyCpuCore();
         core.loadProgram(seq);

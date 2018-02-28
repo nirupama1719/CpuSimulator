@@ -68,7 +68,7 @@ public class MyCpuCore extends CpuCore<GlobalData> {
     }
     
     public void runProgram() {
-        for(int i=0;i<=32;i++){
+        for(int i=0;i<32;i++){
         	advanceClock();
         }
     }

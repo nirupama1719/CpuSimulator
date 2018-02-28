@@ -34,21 +34,22 @@ public class AllMyStages {
         public Fetch(CpuCore core, PipelineRegister input, PipelineRegister output) {
             super(core, input, output);
         }
-        
+        int i=0;
         @Override
         public String getStatus() {
             // Generate a string that helps you debug.
             return null;
         }
-
+        
         @Override
         public void compute(VoidLatch input, FetchToDecode output) {
-            GlobalData globals = (GlobalData)core.getGlobalResources();
-            int pc = globals.program_counter;
+            
+        	GlobalData globals = (GlobalData)core.getGlobalResources();
+            //int pc = globals.program_counter;
             // Fetch the instruction
-            InstructionBase ins = globals.program.getInstructionAt(pc);
+            InstructionBase ins = globals.program.getInstructionAt(i);
             if (ins.isNull()) return;
-
+            
             // Do something idempotent to compute the next program counter.
             
             // Don't forget branches, which MUST be resolved in the Decode
@@ -56,8 +57,8 @@ public class AllMyStages {
             // between stages.
             
             // Your code goes here...
-            
             output.setInstruction(ins);
+            i++;
         }
         
         @Override
@@ -75,6 +76,7 @@ public class AllMyStages {
          */
         @Override
         public void advanceClock() {
+        	
             // Hint:  You will need to implement this help with waiting
             // for branch resolution and updating the program counter.
             // Don't forget to check for stall conditions, such as when
@@ -108,12 +110,12 @@ public class AllMyStages {
             
             GlobalData globals = (GlobalData)core.getGlobalResources();
             int[] regfile = globals.register_file;
-            
+           
             // Do what the decode stage does:
             // - Look up source operands
             // - Decode instruction
-            // - Resolve branches            
-
+            // - Resolve branches    
+            
             output.setInstruction(ins);
             // Set other data that's passed to the next stage.
         }
@@ -130,15 +132,23 @@ public class AllMyStages {
         public void compute(DecodeToExecute input, ExecuteToMemory output) {
             InstructionBase ins = input.getInstruction();
             if (ins.isNull()) return;
-
-            int source1 = ins.getSrc1().getValue();
-            int source2 = ins.getSrc2().getValue();
-            int oper0 =   ins.getOper0().getValue();
-
+            int source1, source2, oper0;
+            if(ins.getOpcode().toString()=="MOVC"){
+            	source1 = ins.getSrc1().getValue();
+                source2 = ins.getSrc2().getValue();
+                oper0 =   ins.getOper0().getRegisterNumber();
+            }
+            else {
+            source1 = ins.getSrc1().getValue();
+            source2 = ins.getSrc2().getValue();
+            oper0 =   ins.getOper0().getValue();
+            }
             int result = MyALU.execute(ins.getOpcode(), source1, source2, oper0);
-                        
+            
             // Fill output with what passes to Memory stage...
+            ins.setoperationResult(result);
             output.setInstruction(ins);
+            System.out.println(result);
             // Set other data that's passed to the next stage.
         }
     }
@@ -173,11 +183,15 @@ public class AllMyStages {
         public void compute(MemoryToWriteback input, VoidLatch output) {
             InstructionBase ins = input.getInstruction();
             if (ins.isNull()) return;
-
+            
             // Write back result to register file
-            
-            
-            
+            GlobalData globals = (GlobalData)core.getGlobalResources();
+            int regfile[]=globals.register_file;
+            if(ins.getOpcode().toString()=="MOVC"){
+            regfile[ins.getOper0().getRegisterNumber()]=ins.getoperationResult();
+            System.out.println("----------------------");
+            System.out.println(ins.getOper0().getRegisterNumber());
+            }
             if (input.getInstruction().getOpcode() == EnumOpcode.HALT) {
                 // Stop the simulation
             }

@@ -22,6 +22,29 @@ public class MyALU {
         // any instruction that requires an ALU operation.  See
         // EnumOpcode.
         
+        switch(opcode){
+        case ADD:
+        	input1=input2+oper0;
+        	result=input1;
+        	break;
+        case SUB:
+        	result=input1-input2;
+        	break;
+        case AND:
+        	result=input1&input2;
+        	break;
+        case OR:
+        	result=input1|input2;
+        	break;
+        case MOVC:
+        	result=input1;
+        	break;
+        case CMP:
+        	result=input2-input1;
+        	break;
+        default:
+        	result=0; 
+        }
         return result;
     }    
 }
