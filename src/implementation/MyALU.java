@@ -24,8 +24,8 @@ public class MyALU {
         
         switch(opcode){
         case ADD:
-        	input1=input2+oper0;
-        	result=input1;
+        	oper0=input1+input2;
+        	result=oper0;
         	break;
         case SUB:
         	result=input1-input2;
@@ -40,7 +40,15 @@ public class MyALU {
         	result=input1;
         	break;
         case CMP:
-        	result=input2-input1;
+        	if(input1==input2){
+        		result=0;
+        	}
+        	else if(input1>input2){
+        		result=1;
+        	}
+        	else{
+        		result=2;
+        	}
         	break;
         default:
         	result=0; 

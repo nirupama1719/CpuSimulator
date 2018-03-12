@@ -19,9 +19,19 @@ import tools.InstructionSequence;
 public class GlobalData implements IGlobals {
     public InstructionSequence program;
     public int program_counter = 0;
-    public int[] register_file = new int[32];
-    public boolean[] register_invalid = new boolean[32];
+    public int getProgram_counter() {
+		return program_counter;
+	}
+    
+    public boolean decode_stalled=false;
+   public boolean bra_stalled=false;
+	public void setProgram_counter(int program_counter) {
+		this.program_counter = program_counter;
+	}
 
+	public int[] register_file = new int[32];
+    public boolean[] register_invalid = new boolean[32];
+    public int[] memory=new int[4000];
     @Override
     public void reset() {
         program_counter = 0;

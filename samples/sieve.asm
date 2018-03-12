@@ -4,7 +4,7 @@
 
 
 
-    movc r10, 100           ; Select maximum value in list of primes
+    movc r10, 4          ; Select maximum value in list of primes
 
 
 

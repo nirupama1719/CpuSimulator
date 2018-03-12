@@ -117,7 +117,6 @@ public abstract class PipelineStageBase<IRT extends LatchBase, ORT extends Latch
             // Otherwise, send the data computed by this stage.
             output_reg.write(output);
         }
-        output_reg.advanceClock();
     }
     
     /**
