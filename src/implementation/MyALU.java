@@ -24,8 +24,7 @@ public class MyALU {
         
         switch(opcode){
         case ADD:
-        	oper0=input1+input2;
-        	result=oper0;
+        	result=input1+input2;
         	break;
         case SUB:
         	result=input1-input2;

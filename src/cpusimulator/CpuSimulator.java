@@ -15,7 +15,7 @@ import tools.InstructionSequence;
  */
 public class CpuSimulator {
     
-    public static boolean printStagesEveryCycle = true;
+    public static boolean printStagesEveryCycle = false;
 
     /**
      * @param args the command line arguments

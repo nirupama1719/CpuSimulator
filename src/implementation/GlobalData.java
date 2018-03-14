@@ -24,7 +24,19 @@ public class GlobalData implements IGlobals {
 	}
     
     public boolean decode_stalled=false;
-   public boolean bra_stalled=false;
+    public boolean exec_stalled=false;
+    public boolean mem_stalled=false;
+    public boolean write_stalled=false;
+    public boolean bra_stalled=false;
+    public boolean taken=false;
+    public boolean stall=false;
+    public boolean eq = false;
+    public boolean ne = false;
+    public boolean gt = false;
+    public boolean ge = false;
+    public boolean lt = false;
+    public boolean le = false;
+    
 	public void setProgram_counter(int program_counter) {
 		this.program_counter = program_counter;
 	}

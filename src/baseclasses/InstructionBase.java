@@ -21,16 +21,16 @@ public class InstructionBase {
     private String instruction_string = "NULL";
     private int line_num = -1;
     private String preceding_label = null;
-    public int operationResult=0;
-    public int getoperationResult() { return operationResult; }
-    public void setoperationResult(int oR) { operationResult = oR; }
+    
     public void setInstructionString(String str) { instruction_string = str; }
     public String getInstructionString() { return instruction_string; }
     public void setLineNum(int line) { line_num = line; }
     public int getLineNum() { return line_num; }
     public void setPrecedingLabel(String str) { preceding_label = str; }
     public String getPrecedingLabel() { return preceding_label; }
-    
+    public int operationResult=0;
+    public int getoperationResult() { return operationResult; }
+    public void setoperationResult(int oR) { operationResult = oR; }
     
     // Program address of this instruction.
     private int pc_address = -1;
