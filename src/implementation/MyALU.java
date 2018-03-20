@@ -39,15 +39,7 @@ public class MyALU {
         	result=input1;
         	break;
         case CMP:
-        	if(input1==input2){
-        		result=0;
-        	}
-        	else if(input1>input2){
-        		result=1;
-        	}
-        	else{
-        		result=2;
-        	}
+        	result=input1-input2;
         	break;
         default:
         	result=0; 

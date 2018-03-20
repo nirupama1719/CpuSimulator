@@ -27,16 +27,21 @@ public class AllMyLatches {
     
     public static class DecodeToExecute extends LatchBase {
         // LatchBase already includes a field for the instruction.
-        // What else do you need here?
     }
     
     public static class ExecuteToMemory extends LatchBase {
         // LatchBase already includes a field for the instruction.
-        // What do you need here?
+        
+        // I decided for readability that I would store compute results
+        // in their own pipeline register field.
+        public int result;
     }
 
     public static class MemoryToWriteback extends LatchBase {
         // LatchBase already includes a field for the instruction.
-        // What do you need here?
+
+        // I decided for readability that I would store compute results
+        // in their own pipeline register field.
+        public int result;
     }    
 }

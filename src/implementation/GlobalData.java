@@ -17,40 +17,58 @@ import tools.InstructionSequence;
  * @author 
  */
 public class GlobalData implements IGlobals {
-    public InstructionSequence program;
-    public int program_counter = 0;
-    public int getProgram_counter() {
-		return program_counter;
-	}
-    
-    public boolean decode_stalled=false;
-    public boolean exec_stalled=false;
-    public boolean mem_stalled=false;
-    public boolean write_stalled=false;
-    public boolean bra_stalled=false;
-    public boolean taken=false;
-    public boolean stall=false;
-    public boolean eq = false;
-    public boolean ne = false;
-    public boolean gt = false;
-    public boolean ge = false;
-    public boolean lt = false;
-    public boolean le = false;
-    
-	public void setProgram_counter(int program_counter) {
-		this.program_counter = program_counter;
-	}
-
-	public int[] register_file = new int[32];
-    public boolean[] register_invalid = new boolean[32];
-    public int[] memory=new int[4000];
     @Override
     public void reset() {
         program_counter = 0;
         register_file = new int[32];
     }
-    
-    
-    // Other global and shared variables here....
 
+    
+    // Is the simulation running?  This is set at startup and cleared by
+    // the HALT instruction (in Writeback).
+    boolean running;
+    
+    // Program store whence we fetch instructions
+    public InstructionSequence program;
+    
+    // Register file and invalid flags
+    public int[] register_file = new int[32];
+    public boolean[] register_invalid = new boolean[32];
+
+    
+    // Main memory
+    public int[] memory = new int[1024];
+
+    
+    // Current instruction to look up
+    public int program_counter = 0;
+    // Next PC to fetch if Decode not stalled and/or branch resolved not taken
+    public int next_program_counter_nobranch = 0;
+    // Next PC to fetch if Decode not stalled and branch resolved taken
+    public int next_program_counter_takenbranch = 0;
+    
+    
+    // Names of branch states and signals
+    public static enum EnumBranchState {
+        NULL, WAITING, TAKEN, NOT_TAKEN
+    }
+    
+    // Current branch state used by Fetch to determine stall condition.
+    // Valid values are NULL and WAITING.
+    public EnumBranchState current_branch_state = EnumBranchState.NULL;
+    
+    // Next branch state as determined by Fetch.  Valid values are NULL
+    // and WAITING.  This is computed by Fetch.compute() and committed to
+    // current_branch_state in Fetch.advanceClock() when Decode is able to 
+    // accept new work.  (When next_branch_state_fetch is committed to
+    // current_branch_state, then next_branch_state_fetch must be cleared.)
+    public EnumBranchState next_branch_state_fetch = EnumBranchState.NULL;
+    
+    // Next branch state as determined by Decode.  Valid values are NULL,
+    // TAKEN, and NOT_TAKEN.  This is computed by Decode.compute() and 
+    // committed to current_branch_state in Fetch.advanceClock().  Think of 
+    // this as a SIGNAL from Decode to Fetch rather than a state, since it 
+    // lasts only one cycle.  (When next_branch_state_decode is committed to
+    // current_branch_state, then next_branch_state_decode must be cleared.)
+    public EnumBranchState next_branch_state_decode = EnumBranchState.NULL;
 }
